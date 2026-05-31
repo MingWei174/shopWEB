@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import CarbonFootprintTimeline from "@/components/CarbonFootprintTimeline";
+import { useCart } from "@/lib/CartContext";
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -25,6 +26,8 @@ const itemVariants = {
 };
 
 export default function AnimatedDetailInfo({ product }) {
+    const { addToCart } = useCart();
+
     return (
         <motion.section 
             className="detail-info-section w-full"
@@ -66,6 +69,7 @@ export default function AnimatedDetailInfo({ product }) {
                 variants={itemVariants} 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={() => addToCart(product)}
                 className="btn-solid w-full mt-8 shadow-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-gradient-to-r from-[#1A1A1A] to-[#333333] text-white font-bold tracking-widest text-lg py-5"
             >
                 Add to Cart

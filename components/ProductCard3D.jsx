@@ -4,10 +4,12 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import ParallaxImage from "@/components/ParallaxImage";
+import { useCart } from "@/lib/CartContext";
 
 export default function ProductCard3D({ product }) {
     const ref = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
+    const { addToCart } = useCart();
 
     // Get mouse position relative to the center of the card (-0.5 to 0.5)
     const x = useMotionValue(0);
@@ -75,7 +77,7 @@ export default function ProductCard3D({ product }) {
                     duration: 0.4, 
                     ease: "easeOut" 
                 }}
-                className="w-full bg-white rounded-3xl p-5 cursor-pointer will-change-transform"
+                className="w-full bg-white rounded-3xl p-5 cursor-pointer will-change-transform group"
             >
                 <Link href={`/shop/${product.id}`} className="block w-full h-full relative" style={{ transformStyle: "preserve-3d" }}>
                     
@@ -92,6 +94,20 @@ export default function ProductCard3D({ product }) {
                             animate={{ opacity: isHovered ? 0.2 : 0 }}
                             className="absolute inset-0 bg-gradient-to-tr from-white to-transparent pointer-events-none mix-blend-overlay"
                         />
+                        
+                        {/* Quick Add Overlay */}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    addToCart(product);
+                                }}
+                                className="w-full bg-white text-black font-medium py-3 rounded-md shadow-lg transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gray-100"
+                            >
+                                加入購物車
+                            </button>
+                        </div>
                     </motion.div>
 
                     {/* Text Area - Floats slightly */}

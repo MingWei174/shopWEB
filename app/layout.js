@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import SmoothScroll from "@/components/SmoothScroll";
 import { ThemeProvider } from "@/components/ThemeProvider"; // 👉 加入這行：引入剛剛的 Provider
+import { CartProvider } from "@/lib/CartContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,16 +22,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    // 👉 加入 suppressHydrationWarning 避免 Next.js 報錯
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         {/* 👉 把 ThemeProvider 包在這裡，並加上 attribute="class" 給 Tailwind */}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SmoothScroll>
-            <Header />
-            {children}
-          </SmoothScroll>
-        </ThemeProvider>
+        <CartProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <SmoothScroll>
+              <Header />
+              {children}
+            </SmoothScroll>
+          </ThemeProvider>
+        </CartProvider>
       </body>
     </html>
   );
